@@ -1,0 +1,68 @@
+const request = require('supertest');
+const mongoose = require('mongoose');
+const express = require('express');
+const authRoutes = require('../routes/auth');
+const User = require('../models/User');
+
+const app = express();
+app.use(express.json());
+app.use('/api/auth', authRoutes);
+
+describe('Authentication API', () => {
+  // Increase timeout to 15 seconds to allow DB connection safely
+  jest.setTimeout(15000);
+
+  beforeAll(async () => {
+    // connect to a local specific test database instead of main config for testing logic 
+    // note: mocking mongoose logic might be better but real test proves route works
+    await mongoose.connect('mongodb://127.0.0.1:27017/easyapply_test', {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+  });
+
+  afterAll(async () => {
+    await mongoose.connection.dropDatabase();
+    await mongoose.connection.close();
+  });
+
+  afterEach(async () => {
+    await User.deleteMany();
+  });
+
+  it('should reject a weak password that is too short', async () => {
+    const res = await request(app)
+      .post('/api/auth/register')
+      .send({ email: 'test@test.com', password: 'short' });
+    
+    expect(res.statusCode).toEqual(400);
+    expect(res.body.msg).toContain('more than 8 characters');
+  });
+
+  it('should reject a password without a special character', async () => {
+    const res = await request(app)
+      .post('/api/auth/register')
+      .send({ email: 'test@test.com', password: 'longpassword' });
+    
+    expect(res.statusCode).toEqual(400);
+    expect(res.body.msg).toContain('special character');
+  });
+
+  it('should reject a password without a lowercase character', async () => {
+    const res = await request(app)
+      .post('/api/auth/register')
+      .send({ email: 'test@test.com', password: 'LONGPASSWORD!1' });
+    
+    expect(res.statusCode).toEqual(400);
+    expect(res.body.msg).toContain('lowercase letter');
+  });
+
+  it('should register successfully with a strong password', async () => {
+    const res = await request(app)
+      .post('/api/auth/register')
+      .send({ email: 'strong@test.com', password: 'Strong!Password123' });
+    
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toHaveProperty('token');
+  });
+});
