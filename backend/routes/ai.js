@@ -1,7 +1,16 @@
 const express = require('express');
-const { resumeReview, jobMatch, improveBullet, generateCoverLetter, generateInterviewQuestions } = require('../controllers/aiController');
+const {
+  health,
+  resumeReview,
+  jobMatch,
+  improveBullet,
+  generateCoverLetter,
+  generateInterviewQuestions,
+} = require('../controllers/aiController');
 const auth = require('../middleware/auth');
 const router = express.Router();
+
+router.get('/health', health);
 
 router.post('/resume-review', auth, resumeReview);
 router.post('/job-match', auth, jobMatch);
