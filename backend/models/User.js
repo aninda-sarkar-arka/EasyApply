@@ -21,6 +21,11 @@ const userSchema = new mongoose.Schema({
     jobLocations: [String],
     resume: String,
   },
+  resumes: [{
+    filename: String,
+    originalName: String,
+    uploadDate: { type: Date, default: Date.now },
+  }],
   createdAt: { type: Date, default: Date.now },
 });
 
