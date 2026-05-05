@@ -37,7 +37,7 @@ const Register = () => {
       await register("User", email, password); // Passed 'User' tentatively, backend defaults to email split
       navigate('/');
     } catch (err) {
-      setErrorMsg(err.message || 'Registration failed');
+      setErrorMsg(err?.response?.data?.msg || 'Registration failed');
     }
   };
 

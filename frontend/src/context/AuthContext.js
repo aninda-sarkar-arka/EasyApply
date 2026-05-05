@@ -27,6 +27,7 @@ export const AuthProvider = ({ children }) => {
     const res = await axios.post('http://localhost:5000/api/auth/login', { email, password });
     setToken(res.data.token);
     localStorage.setItem('token', res.data.token);
+    axios.defaults.headers.common['x-auth-token'] = res.data.token;
     loadUser();
   };
 
@@ -34,6 +35,7 @@ export const AuthProvider = ({ children }) => {
     const res = await axios.post('http://localhost:5000/api/auth/register', { name, email, password });
     setToken(res.data.token);
     localStorage.setItem('token', res.data.token);
+    axios.defaults.headers.common['x-auth-token'] = res.data.token;
     loadUser();
   };
 
