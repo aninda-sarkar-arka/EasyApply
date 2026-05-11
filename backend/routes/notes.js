@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { auth } = require('../middleware/auth');
+const auth = require('../middleware/auth');
 const noteCtrl = require('../controllers/noteController');
 
 // Get all notes for logged‑in user

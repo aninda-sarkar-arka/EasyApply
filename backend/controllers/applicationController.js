@@ -80,6 +80,9 @@ exports.createApplication = async (req, res) => {
     await application.save();
     res.json(application);
   } catch (err) {
+    if (err.name === 'ValidationError') {
+      return res.status(400).json({ msg: err.message });
+    }
     res.status(500).json({ msg: 'Server error' });
   }
 };

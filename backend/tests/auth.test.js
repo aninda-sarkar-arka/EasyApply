@@ -4,18 +4,28 @@ const express = require('express');
 const authRoutes = require('../routes/auth');
 const User = require('../models/User');
 
+const dotenv = require('dotenv');
+dotenv.config();
+
 const app = express();
 app.use(express.json());
 app.use('/api/auth', authRoutes);
 
 describe('Authentication API', () => {
-  // Increase timeout to 15 seconds to allow DB connection safely
-  jest.setTimeout(15000);
+  // Increase timeout to 30 seconds to allow DB connection safely (especially for cloud)
+  jest.setTimeout(30000);
 
   beforeAll(async () => {
-    // connect to a local specific test database instead of main config for testing logic 
-    // note: mocking mongoose logic might be better but real test proves route works
-    await mongoose.connect('mongodb://127.0.0.1:27017/easyapply_test', {
+    let testUri = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/easyapply_test';
+    if (testUri.includes('?')) {
+      testUri = testUri.replace('/EasyApply?', '/EasyApply_test_auth?');
+    } else if (testUri.endsWith('/EasyApply')) {
+      testUri = testUri.replace('/EasyApply', '/EasyApply_test_auth');
+    } else {
+      testUri += '_auth';
+    }
+
+    await mongoose.connect(testUri, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
