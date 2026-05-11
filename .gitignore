@@ -45,5 +45,4 @@ Thumbs.db
 *.err
 
 # User-requested docs exclusions
-README.md
-*.pdf
+# (Removed README.md and *.pdf from here to allow documentation in repo)
