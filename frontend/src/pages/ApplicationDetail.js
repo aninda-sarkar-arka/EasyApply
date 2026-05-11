@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import ReactMarkdown from 'react-markdown';
 import { toDatetimeLocalValue, getDeadlineInsight, getInterviewUrgency } from '../utils/applicationInsights';
 
 const STATUSES = ['saved', 'applied', 'interview', 'offer', 'rejected'];
@@ -257,7 +258,9 @@ const ApplicationDetail = () => {
           {app?.jobDescription && (
             <div className="detail-item" style={{ gridColumn: '1 / -1' }}>
               <p>Job Description</p>
-              <div className="ai-result" style={{ maxHeight: '200px' }}>{app.jobDescription}</div>
+              <div className="ai-result" style={{ maxHeight: '200px' }}>
+                <ReactMarkdown>{app.jobDescription}</ReactMarkdown>
+              </div>
             </div>
           )}
           {app?.notes && (
@@ -276,19 +279,25 @@ const ApplicationDetail = () => {
           {app.aiFeedback.resumeReview && (
             <div style={{ marginBottom: '1rem' }}>
               <p className="muted" style={{ marginBottom: '0.4rem', fontWeight: 600 }}>Resume Review</p>
-              <div className="ai-result">{app.aiFeedback.resumeReview}</div>
+              <div className="ai-result">
+                <ReactMarkdown>{app.aiFeedback.resumeReview}</ReactMarkdown>
+              </div>
             </div>
           )}
           {app.aiFeedback.jobMatch && (
             <div style={{ marginBottom: '1rem' }}>
               <p className="muted" style={{ marginBottom: '0.4rem', fontWeight: 600 }}>Job Match Analysis</p>
-              <div className="ai-result">{app.aiFeedback.jobMatch}</div>
+              <div className="ai-result">
+                <ReactMarkdown>{app.aiFeedback.jobMatch}</ReactMarkdown>
+              </div>
             </div>
           )}
           {app.aiFeedback.coverLetter && (
             <div>
               <p className="muted" style={{ marginBottom: '0.4rem', fontWeight: 600 }}>Cover Letter</p>
-              <div className="ai-result">{app.aiFeedback.coverLetter}</div>
+              <div className="ai-result">
+                <ReactMarkdown>{app.aiFeedback.coverLetter}</ReactMarkdown>
+              </div>
             </div>
           )}
         </section>

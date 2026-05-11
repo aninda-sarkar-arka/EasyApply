@@ -515,18 +515,48 @@
   background: #0d1520;
   border: 1px solid #1f2b3b;
   border-radius: 14px;
-  padding: 1.2rem;
-  white-space: pre-wrap;
-  line-height: 1.65;
+  padding: 1.4rem;
+  line-height: 1.7;
   color: #c8ddf8;
-  font-size: 0.92rem;
-  max-height: 500px;
+  font-size: 0.94rem;
+  max-height: 600px;
   overflow-y: auto;
+}
+
+.ai-result h1, .ai-result h2, .ai-result h3 {
+  color: #f3f8ff;
+  margin: 1.2rem 0 0.6rem;
+}
+
+.ai-result h2 { font-size: 1.2rem; border-bottom: 1px solid #1f2b3b; padding-bottom: 0.4rem; }
+.ai-result h3 { font-size: 1.05rem; }
+
+.ai-result p {
+  margin: 0.8rem 0;
+}
+
+.ai-result ul, .ai-result ol {
+  margin: 0.8rem 0;
+  padding-left: 1.4rem;
+}
+
+.ai-result li {
+  margin-bottom: 0.4rem;
 }
 
 .ai-result strong,
 .ai-result b {
   color: #89b6ff;
+  font-weight: 600;
+}
+
+.ai-result code {
+  background: #1a2636;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.85em;
+  color: #a8bfdc;
 }
 
 .ai-loading {

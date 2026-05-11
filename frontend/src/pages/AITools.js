@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import ReactMarkdown from 'react-markdown';
 
 const TABS = [
   { id: 'review', label: 'Resume Review', icon: '📋' },
@@ -234,7 +235,9 @@ const AITools = () => {
               </button>
             </div>
           </div>
-          <div className="ai-result">{result}</div>
+          <div className="ai-result">
+            <ReactMarkdown>{result}</ReactMarkdown>
+          </div>
         </section>
       )}
     </section>
