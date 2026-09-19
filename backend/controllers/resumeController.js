@@ -89,7 +89,9 @@ exports.deleteResume = async (req, res) => {
 
 exports.downloadResume = async (req, res) => {
   try {
-    const filepath = path.join(__dirname, '..', 'uploads', req.params.filename);
+    // path.basename strips any directory traversal (e.g. ../../etc/passwd → passwd)
+    const safeFilename = path.basename(req.params.filename);
+    const filepath = path.join(__dirname, '..', 'uploads', safeFilename);
     if (!fs.existsSync(filepath)) {
       return res.status(404).json({ msg: 'File not found' });
     }

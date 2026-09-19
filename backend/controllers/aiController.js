@@ -1,3 +1,4 @@
+
 const { GoogleGenAI } = require('@google/genai');
 
 let ai;
@@ -20,7 +21,7 @@ const callGemini = async (prompt) => {
   }
 
   const response = await ai.models.generateContent({
-    model: 'gemini-3-flash-preview',
+    model: 'gemini-2.0-flash',
     contents: prompt,
   });
 
@@ -50,7 +51,7 @@ exports.health = (req, res) => {
   res.json({
     ok: hasKey,
     provider: 'Google GenAI SDK',
-    model: 'gemini-3-flash-preview',
+    model: 'gemini-2.0-flash',
     message: hasKey
       ? 'GEMINI_API_KEY is set. AI routes can call the API.'
       : 'Set GEMINI_API_KEY in backend/.env to enable AI features.',

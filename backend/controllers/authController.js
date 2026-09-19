@@ -2,6 +2,7 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
+const { findDemoUserByEmail } = require('../config/demoData');
 
 
 exports.register = async (req, res) => {
@@ -57,6 +58,15 @@ exports.login = async (req, res) => {
       return res.status(500).json({ msg: 'Server auth configuration is missing JWT_SECRET.' });
     }
 
+    // Demo login: bypass database entirely
+    const demoUser = findDemoUserByEmail(email);
+    if (demoUser) {
+      const payload = { user: { id: demoUser.id } };
+      return jwt.sign(payload, jwtSecret, { expiresIn: 3600 }, (err, token) => {
+        if (err) return res.status(500).json({ msg: 'Failed to create authentication token.' });
+        res.json({ token });
+      });
+    }
 
     if (mongoose.connection.readyState !== 1) {
       return res.status(503).json({ msg: 'Database is unavailable. Please verify MongoDB is running and try again.' });

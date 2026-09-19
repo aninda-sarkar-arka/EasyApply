@@ -1,39 +1,28 @@
 const request = require('supertest');
 const mongoose = require('mongoose');
+const { MongoMemoryServer } = require('mongodb-memory-server');
 const express = require('express');
 const authRoutes = require('../routes/auth');
 const User = require('../models/User');
-
-const dotenv = require('dotenv');
-dotenv.config();
 
 const app = express();
 app.use(express.json());
 app.use('/api/auth', authRoutes);
 
+let mongod;
+
 describe('Authentication API', () => {
-  // Increase timeout to 30 seconds to allow DB connection safely (especially for cloud)
-  jest.setTimeout(30000);
+  jest.setTimeout(60000);
 
   beforeAll(async () => {
-    let testUri = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/easyapply_test';
-    if (testUri.includes('?')) {
-      testUri = testUri.replace('/EasyApply?', '/EasyApply_test_auth?');
-    } else if (testUri.endsWith('/EasyApply')) {
-      testUri = testUri.replace('/EasyApply', '/EasyApply_test_auth');
-    } else {
-      testUri += '_auth';
-    }
-
-    await mongoose.connect(testUri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    mongod = await MongoMemoryServer.create();
+    await mongoose.connect(mongod.getUri());
   });
 
   afterAll(async () => {
     await mongoose.connection.dropDatabase();
     await mongoose.connection.close();
+    await mongod.stop();
   });
 
   afterEach(async () => {
@@ -44,7 +33,7 @@ describe('Authentication API', () => {
     const res = await request(app)
       .post('/api/auth/register')
       .send({ email: 'test@test.com', password: 'short' });
-    
+
     expect(res.statusCode).toEqual(400);
     expect(res.body.msg).toContain('more than 8 characters');
   });
@@ -53,7 +42,7 @@ describe('Authentication API', () => {
     const res = await request(app)
       .post('/api/auth/register')
       .send({ email: 'test@test.com', password: 'longpassword' });
-    
+
     expect(res.statusCode).toEqual(400);
     expect(res.body.msg).toContain('special character');
   });
@@ -62,7 +51,7 @@ describe('Authentication API', () => {
     const res = await request(app)
       .post('/api/auth/register')
       .send({ email: 'test@test.com', password: 'LONGPASSWORD!1' });
-    
+
     expect(res.statusCode).toEqual(400);
     expect(res.body.msg).toContain('lowercase letter');
   });
@@ -71,8 +60,34 @@ describe('Authentication API', () => {
     const res = await request(app)
       .post('/api/auth/register')
       .send({ email: 'strong@test.com', password: 'Strong!Password123' });
-    
+
     expect(res.statusCode).toEqual(200);
     expect(res.body).toHaveProperty('token');
+  });
+
+  it('should login with valid credentials', async () => {
+    await request(app)
+      .post('/api/auth/register')
+      .send({ email: 'login@test.com', password: 'Strong!Password123' });
+
+    const res = await request(app)
+      .post('/api/auth/login')
+      .send({ email: 'login@test.com', password: 'Strong!Password123' });
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toHaveProperty('token');
+  });
+
+  it('should reject login with wrong password', async () => {
+    await request(app)
+      .post('/api/auth/register')
+      .send({ email: 'login2@test.com', password: 'Strong!Password123' });
+
+    const res = await request(app)
+      .post('/api/auth/login')
+      .send({ email: 'login2@test.com', password: 'WrongPassword!99' });
+
+    expect(res.statusCode).toEqual(400);
+    expect(res.body.msg).toBe('Invalid credentials');
   });
 });

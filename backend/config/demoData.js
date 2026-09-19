@@ -1,13 +1,12 @@
 const demoUsers = [
   {
     id: 'demo-user-1',
-    name: 'Aninda Sarkar',
-    email: 'aninda.sarkar11@gmail.com',
-    password: '1234567a@',
+    name: 'Alex Demo',
+    email: 'demo1@example.com',
     profile: {
       skills: ['JavaScript', 'React', 'Node.js', 'MongoDB'],
       preferredRoles: ['Frontend Developer', 'Full Stack Developer'],
-      jobLocations: ['Remote', 'Kolkata', 'Bangalore'],
+      jobLocations: ['Remote', 'New York', 'San Francisco'],
       education: [{ degree: 'B.Tech', institution: 'Demo Institute', year: 2025 }],
       experience: [
         {
@@ -21,13 +20,12 @@ const demoUsers = [
   },
   {
     id: 'demo-user-2',
-    name: 'Aninda Sarkar',
-    email: 'aninda.sarkar12@gmail.com',
-    password: '1234567b@',
+    name: 'Sam Demo',
+    email: 'demo2@example.com',
     profile: {
       skills: ['Python', 'Data Analysis', 'SQL'],
       preferredRoles: ['Backend Developer', 'Data Analyst'],
-      jobLocations: ['Remote', 'Hyderabad'],
+      jobLocations: ['Remote', 'Austin'],
       education: [{ degree: 'B.Sc', institution: 'Demo University', year: 2024 }],
       experience: [],
     },
