@@ -3,6 +3,10 @@ node_modules/
 legacy/frontend/node_modules/
 legacy/backend/node_modules/
 
+# WXT / extension build output
+.output/
+.wxt/
+
 # Build outputs
 build/
 dist/
