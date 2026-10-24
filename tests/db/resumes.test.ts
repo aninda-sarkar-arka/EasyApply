@@ -18,7 +18,7 @@ describe('resumesRepository', () => {
     await repo.add({ filename: 'new.pdf', originalName: 'new', uploadDate: '2024-06-01T00:00:00.000Z' });
     const all = await repo.getAll();
     expect(all.length).toBe(2);
-    expect(all[0].filename).toBe('new.pdf');
+    expect(all[0]!.filename).toBe('new.pdf');
   });
 
   it('getById returns the correct resume', async () => {
