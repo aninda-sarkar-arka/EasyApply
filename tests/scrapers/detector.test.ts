@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { extractJobIdFromUrl, isSuccessModalVisible } from '../../src/scrapers/linkedin/detector';
+import { extractJobIdFromUrl, isSuccessModalVisible, isEasyApplyJob, watchExternalApply } from '../../src/scrapers/linkedin/detector';
 
 describe('extractJobIdFromUrl', () => {
   it('extracts job ID from /jobs/view/ path', () => {
@@ -32,6 +32,43 @@ describe('extractJobIdFromUrl', () => {
 
   it('returns null for an empty string', () => {
     expect(extractJobIdFromUrl('')).toBeNull();
+  });
+});
+
+describe('isEasyApplyJob', () => {
+  beforeEach(() => { document.body.innerHTML = ''; });
+  afterEach(() => { document.body.innerHTML = ''; });
+
+  it('returns false when the DOM is empty', () => {
+    expect(isEasyApplyJob()).toBe(false);
+  });
+
+  it('returns true when an Easy Apply button is present', () => {
+    document.body.innerHTML = `<button aria-label="Easy Apply at Acme">Easy Apply</button>`;
+    expect(isEasyApplyJob()).toBe(true);
+  });
+
+  it('returns false when only an external Apply button is present', () => {
+    document.body.innerHTML = `<button aria-label="Apply at Acme">Apply</button>`;
+    expect(isEasyApplyJob()).toBe(false);
+  });
+});
+
+describe('watchExternalApply', () => {
+  beforeEach(() => { document.body.innerHTML = ''; });
+  afterEach(() => { document.body.innerHTML = ''; });
+
+  it('calls callback when the external Apply button is clicked', () => {
+    document.body.innerHTML = `<button aria-label="Apply at Acme Corp">Apply</button>`;
+    let called = '';
+    const stop = watchExternalApply('job123', (id) => { called = id; });
+    document.querySelector('button')?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    expect(called).toBe('job123');
+    stop();
+  });
+
+  it('returns a no-op cleanup when no external Apply button is found', () => {
+    expect(() => watchExternalApply('job123', () => undefined)()).not.toThrow();
   });
 });
 

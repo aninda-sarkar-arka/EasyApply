@@ -27,6 +27,25 @@ export const selectors = {
     '.job-details-jobs-unified-top-card__primary-description .tvm__text',
   ],
 
+  /**
+   * The Easy Apply button (opens a LinkedIn modal, not an external ATS).
+   * Presence of this button means the job supports Easy Apply.
+   */
+  easyApplyButton: [
+    'button[aria-label*="Easy Apply"]',
+    'button.jobs-apply-button--top-card[aria-label*="Easy"]',
+  ],
+
+  /**
+   * The external Apply button (opens the company ATS in a new tab).
+   * Use only when easyApplyButton is NOT present on the page.
+   */
+  externalApplyButton: [
+    'button[aria-label^="Apply"][aria-label*=" at "]',
+    'button.jobs-apply-button--top-card:not([aria-label*="Easy"])',
+    '.job-details-jobs-unified-top-card__apply-cta a[target="_blank"]',
+  ],
+
   /** Selectors that indicate the Easy Apply success modal is visible. */
   successModal: [
     '[aria-label*="Application submitted"]',

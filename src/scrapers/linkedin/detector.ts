@@ -75,6 +75,40 @@ export function watchSuccessModal(jobId: string, callback: (jobId: string) => vo
   return () => observer.disconnect();
 }
 
+/**
+ * Returns true if the current job page has an Easy Apply button (LinkedIn modal flow).
+ * When false, an external Apply button may be present instead.
+ */
+export function isEasyApplyJob(): boolean {
+  return selectors.easyApplyButton.some((s) => Boolean(document.querySelector(s)));
+}
+
+/**
+ * Attach a one-shot click listener to the external Apply button.
+ * Calls `callback` when the user clicks Apply, then removes the listener.
+ * Returns a cleanup function that removes the listener early.
+ * If no external Apply button is found, returns a no-op cleanup.
+ */
+export function watchExternalApply(jobId: string, callback: (jobId: string) => void): () => void {
+  let el: Element | null = null;
+  for (const selector of selectors.externalApplyButton) {
+    el = document.querySelector(selector);
+    if (el) break;
+  }
+  if (!el) return () => undefined;
+
+  function onClick() {
+    cleanup();
+    callback(jobId);
+  }
+  el.addEventListener('click', onClick);
+
+  function cleanup() {
+    el?.removeEventListener('click', onClick);
+  }
+  return cleanup;
+}
+
 /** Returns true if the Easy Apply success modal is currently visible. */
 export function isSuccessModalVisible(): boolean {
   for (const selector of selectors.successModal) {
