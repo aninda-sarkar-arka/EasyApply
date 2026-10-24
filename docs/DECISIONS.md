@@ -30,6 +30,7 @@
 
 ## ADR-005: Extension framework
 
-**Status:** Open
-**Options:** WXT, Plasmo, manual Vite + Manifest V3.
-**Notes:** WXT is the current leading candidate (good MV3 support, React, hot reload, file-based entrypoints).
+**Status:** Accepted
+**Decision:** WXT (`wxt` v0.21.x).
+**Why:** File-based entrypoints match the planned structure exactly, hot reload works without manual MV3 service-worker workarounds, and first-class TypeScript + React support avoids extra config. Plasmo was ruled out (heavier opinionation). Manual Vite was ruled out (maintenance burden for MV3 quirks).
+**Consequences:** `entrypoints/` is the WXT convention for background, content scripts, popup, and dashboard pages. Build outputs to `.output/chrome-mv3`. Dev server via `wxt` command.

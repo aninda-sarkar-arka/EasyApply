@@ -2,8 +2,8 @@
 
 > Single source of truth for "where are we". Read at the start of every session, updated at the end of every session.
 
-**Last updated:** 2026-09-19 (Session 0)
-**Current phase:** Phase 0: Audit and foundation
+**Last updated:** 2026-10-24
+**Current phase:** Phase 1: Local data layer and dashboard
 
 ## Goal
 
@@ -31,34 +31,37 @@ See `docs/ARCHITECTURE.md` Part 2 for full folder layout and migration mapping t
 - [x] Legacy MERN app with dashboard and Gemini features
 - [x] Architecture direction agreed (see `DECISIONS.md`)
 - [x] Session 0: full codebase audit (`ARCHITECTURE.md` written, issues logged, roadmap refined)
+- [x] Fix critical legacy issues (ISSUE-002, ISSUE-003, ISSUE-007, ISSUE-008, ISSUE-009)
+- [x] Migrate legacy tests to in-memory MongoDB (ISSUE-010)
+- [x] Move legacy code to `legacy/` directory
+- [x] Scaffold WXT extension with TypeScript, ESLint, Prettier, Vitest (ADR-005 resolved)
+- [x] Dexie schema and repository layer with full test coverage (`src/db/`)
+- [x] Dashboard extension page: Dashboard (stats + charts), ApplicationsList (CRUD), ApplicationDetail (pipeline + notes + timeline), insights lib (`src/lib/insights.ts`)
 
 ## In progress
 
-_(nothing in progress between sessions)_
+- [ ] JSON export/import of all application data (Phase 1 remaining item)
 
 ## Next up
 
-1. Fix ISSUE-007: replace real personal email addresses in `demoData.js` with fictitious ones and remove plaintext passwords. Commit.
-2. Fix ISSUE-008: correct Gemini model name from `gemini-3-flash-preview` to `gemini-2.0-flash`. Commit.
-3. Fix ISSUE-002: mount `routes/resumes.js` and `routes/notes.js` in `server.js`. Commit.
-4. Decide extension framework (ADR-005): review WXT vs Plasmo vs manual Vite + MV3. Confirm choice.
-5. Move legacy code to `legacy/` directory. Commit.
-6. Scaffold extension with chosen framework: TypeScript, ESLint, Prettier, Vitest, CI.
+1. JSON export/import: add export-all-to-JSON and import-from-JSON to the dashboard (Settings page or toolbar button).
+2. Begin Phase 2: SPA navigation listener on `linkedin.com/jobs/*`, job ID extraction from URL, Easy Apply success-modal detector.
+3. Save prompt component in Shadow DOM with dedup by LinkedIn job ID.
 
 ## Roadmap
 
-**Phase 0: Audit and foundation** (current)
+**Phase 0: Audit and foundation** (complete)
 - [x] Audit codebase, write `ARCHITECTURE.md`, log issues.
-- [ ] Fix critical legacy bugs and security issues (ISSUE-002, ISSUE-007, ISSUE-008).
-- [ ] Move legacy code to `legacy/` directory.
-- [ ] Decide and finalize extension framework (ADR-005).
-- [ ] Scaffold extension: TypeScript, ESLint, Prettier, Vitest, Manifest V3, CI (GitHub Actions).
+- [x] Fix critical legacy bugs and security issues (ISSUE-002, ISSUE-003, ISSUE-007, ISSUE-008, ISSUE-009, ISSUE-010).
+- [x] Move legacy code to `legacy/` directory.
+- [x] Decide and finalize extension framework: WXT (ADR-005).
+- [x] Scaffold extension: TypeScript, ESLint, Prettier, Vitest, Manifest V3.
 
-**Phase 1: Local data layer and dashboard**
-- Dexie schema mirroring legacy models (applications, resumes, settings).
-- Repository layer for all CRUD operations.
-- Port the React dashboard into an extension page (`chrome-extension://.../dashboard.html`).
-- Full JSON export/import of all application data.
+**Phase 1: Local data layer and dashboard** (current)
+- [x] Dexie schema mirroring legacy models (applications, resumes, settings).
+- [x] Repository layer for all CRUD operations (`src/db/repositories/`).
+- [x] Port the React dashboard into an extension page (Dashboard, ApplicationsList, ApplicationDetail).
+- [ ] Full JSON export/import of all application data.
 
 **Phase 2: LinkedIn Easy Apply detection**
 - SPA navigation listener (URL change detection on `linkedin.com/jobs/*`).
