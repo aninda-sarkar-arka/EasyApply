@@ -40,13 +40,13 @@ See `docs/ARCHITECTURE.md` Part 2 for full folder layout and migration mapping t
 
 ## In progress
 
-- [ ] JSON export/import of all application data (Phase 1 remaining item)
+_(nothing in progress between sessions)_
 
 ## Next up
 
-1. JSON export/import: add export-all-to-JSON and import-from-JSON to the dashboard (Settings page or toolbar button).
-2. Begin Phase 2: SPA navigation listener on `linkedin.com/jobs/*`, job ID extraction from URL, Easy Apply success-modal detector.
-3. Save prompt component in Shadow DOM with dedup by LinkedIn job ID.
+1. Save prompt in Shadow DOM: inject a WXT `createShadowRootUi` component asking the user to confirm saving after Easy Apply success is detected. (Currently the background worker saves silently.)
+2. Phase 3: External Apply flow -- capture job data at Apply click as a pending application, link new ATS tab via openerTabId, confirmation prompt.
+3. Missing dashboard pages: SavedJobs (filtered view), NoteManagement (cross-application interview notes).
 
 ## Roadmap
 
@@ -57,18 +57,18 @@ See `docs/ARCHITECTURE.md` Part 2 for full folder layout and migration mapping t
 - [x] Decide and finalize extension framework: WXT (ADR-005).
 - [x] Scaffold extension: TypeScript, ESLint, Prettier, Vitest, Manifest V3.
 
-**Phase 1: Local data layer and dashboard** (current)
+**Phase 1: Local data layer and dashboard** (complete)
 - [x] Dexie schema mirroring legacy models (applications, resumes, settings).
 - [x] Repository layer for all CRUD operations (`src/db/repositories/`).
 - [x] Port the React dashboard into an extension page (Dashboard, ApplicationsList, ApplicationDetail).
-- [ ] Full JSON export/import of all application data.
+- [x] Full JSON export/import of all application data (Settings page, `src/lib/export.ts`).
 
-**Phase 2: LinkedIn Easy Apply detection**
-- SPA navigation listener (URL change detection on `linkedin.com/jobs/*`).
-- Job ID extraction from URL.
-- Easy Apply success-modal detector (MutationObserver, fallback to text match).
-- Save prompt in Shadow DOM (isolates extension styles from LinkedIn styles).
-- Deduplication by job ID.
+**Phase 2: LinkedIn Easy Apply detection** (in progress)
+- [x] SPA navigation listener (URL change detection on `linkedin.com/jobs/*`).
+- [x] Job ID extraction from URL.
+- [x] Easy Apply success-modal detector (MutationObserver, selector + text fallback).
+- [x] Deduplication by job ID (background worker checks before saving).
+- [ ] Save prompt in Shadow DOM: ask user to confirm before saving (currently auto-saves silently).
 
 **Phase 3: External Apply flow**
 - Capture job data at Apply click as a "pending" application in `chrome.storage.session`.
