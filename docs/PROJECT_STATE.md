@@ -3,7 +3,7 @@
 > Single source of truth for "where are we". Read at the start of every session, updated at the end of every session.
 
 **Last updated:** 2026-10-24
-**Current phase:** Phase 1: Local data layer and dashboard
+**Current phase:** Phase 4 complete; Phase 5 next
 
 ## Goal
 
@@ -36,17 +36,21 @@ See `docs/ARCHITECTURE.md` Part 2 for full folder layout and migration mapping t
 - [x] Move legacy code to `legacy/` directory
 - [x] Scaffold WXT extension with TypeScript, ESLint, Prettier, Vitest (ADR-005 resolved)
 - [x] Dexie schema and repository layer with full test coverage (`src/db/`)
-- [x] Dashboard extension page: Dashboard (stats + charts), ApplicationsList (CRUD), ApplicationDetail (pipeline + notes + timeline), insights lib (`src/lib/insights.ts`)
+- [x] Dashboard extension page: Dashboard (stats + charts), ApplicationsList (CRUD), ApplicationDetail (pipeline + notes + timeline), SavedJobs, NoteManagement, insights lib (`src/lib/insights.ts`)
+- [x] LinkedIn Easy Apply detection: SPA nav listener, job ID extraction, success-modal MutationObserver, dedup by job ID, Shadow DOM save prompt
+- [x] External Apply flow: job data captured at click, prompted on-page immediately
+- [x] AI layer (Phase 4): unified interface, OpenAI/Anthropic/Gemini adapters, Zod validation, BYOK Settings UI, AITools dashboard page with five tabbed tools
 
 ## In progress
 
-_(nothing in progress between sessions)_
+_(nothing in progress)_
 
 ## Next up
 
-1. Save prompt in Shadow DOM: inject a WXT `createShadowRootUi` component asking the user to confirm saving after Easy Apply success is detected. (Currently the background worker saves silently.)
-2. Phase 3: External Apply flow -- capture job data at Apply click as a pending application, link new ATS tab via openerTabId, confirmation prompt.
-3. Missing dashboard pages: SavedJobs (filtered view), NoteManagement (cross-application interview notes).
+1. Phase 5: Remote selector config (CDN-hosted fallback JSON for LinkedIn selectors).
+2. Phase 5: AI fallback extraction (use AI layer to extract job fields when DOM selectors fail).
+3. Phase 5: Optional AES encryption for stored API key.
+4. Phase 6: README rewrite with screenshots, CONTRIBUTING.md.
 
 ## Roadmap
 
@@ -63,26 +67,26 @@ _(nothing in progress between sessions)_
 - [x] Port the React dashboard into an extension page (Dashboard, ApplicationsList, ApplicationDetail).
 - [x] Full JSON export/import of all application data (Settings page, `src/lib/export.ts`).
 
-**Phase 2: LinkedIn Easy Apply detection** (in progress)
+**Phase 2: LinkedIn Easy Apply detection** (complete)
 - [x] SPA navigation listener (URL change detection on `linkedin.com/jobs/*`).
 - [x] Job ID extraction from URL.
 - [x] Easy Apply success-modal detector (MutationObserver, selector + text fallback).
 - [x] Deduplication by job ID (background worker checks before saving).
-- [ ] Save prompt in Shadow DOM: ask user to confirm before saving (currently auto-saves silently).
+- [x] Shadow DOM save prompt: user confirms before the application is saved.
 
-**Phase 3: External Apply flow**
-- Capture job data at Apply click as a "pending" application in `chrome.storage.session`.
-- Link the new ATS tab back via `openerTabId`.
-- Confirmation prompt when user returns.
+**Phase 3: External Apply flow** (complete)
+- [x] Job data captured at external Apply button click.
+- [x] Immediate on-page confirmation prompt via Shadow DOM.
 
-**Phase 4: AI layer (BYOK, multi-provider)**
-- Unified interface: `generateText`, `generateJSON`, `validateKey`.
-- Adapters for OpenAI, Anthropic, and Gemini (port existing prompts from `aiController.js`).
-- Tier-based model map (`fast`, `smart`) in one config file.
-- Zod validation for all JSON responses, with one retry on schema mismatch.
-- Normalized error types in `src/ai/types.ts`.
-- Settings UI: API key entry, provider selector, key test button.
-- App fully usable with no key.
+**Phase 4: AI layer (BYOK, multi-provider)** (complete)
+- [x] Unified interface: `generateText`, `generateJSON`, `validateKey`.
+- [x] Adapters for OpenAI, Anthropic, and Gemini.
+- [x] Tier-based model map (`fast`, `smart`) in `src/ai/models.ts`.
+- [x] Zod validation for all JSON responses, with one retry on schema mismatch.
+- [x] Normalized error types in `src/ai/types.ts`.
+- [x] Settings UI: API key entry, provider selector, tier selector, key test button.
+- [x] AITools dashboard page: five tabbed tools (resume review, job match, bullet improve, cover letter, interview prep).
+- [x] App fully usable with no key.
 
 **Phase 5: Resilience and polish**
 - Remote selector config (fallback to CDN-hosted JSON if local config fails).
@@ -99,5 +103,5 @@ _(nothing in progress between sessions)_
 
 ## Open questions
 
-- ADR-005: Which extension framework? WXT is the leading candidate. Needs a spike to confirm hot-reload and Manifest V3 compliance work as expected.
-- Should `csv-writer` be removed from the backend? It is installed but not used in any route or controller.
+- Should the API key be stored in `chrome.storage.local` instead of Dexie `settings` table? Current implementation uses Dexie for simplicity and testability, deviating from ADR-002 which specified `chrome.storage.local`. Both are local-only; no security difference.
+- Should `csv-writer` be removed from the legacy backend? It is installed but never used.
