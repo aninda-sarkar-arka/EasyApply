@@ -1,5 +1,7 @@
 import { watchNavigation, watchSuccessModal } from '../../src/scrapers/linkedin/detector';
 import { extractJobDetails } from '../../src/scrapers/linkedin/extractor';
+import { mountSavePrompt } from '../../src/scrapers/linkedin/savePrompt';
+import type { SavePromptHandle } from '../../src/scrapers/linkedin/savePrompt';
 
 export default defineContentScript({
   matches: ['*://www.linkedin.com/jobs/*'],
@@ -7,24 +9,37 @@ export default defineContentScript({
 
   main() {
     let stopSuccessWatcher: (() => void) | null = null;
+    let activePrompt: SavePromptHandle | null = null;
 
     const stopNav = watchNavigation((jobId) => {
-      // Stop watching the previous job's success modal before watching the new one.
       stopSuccessWatcher?.();
+      activePrompt?.remove();
+      activePrompt = null;
 
       stopSuccessWatcher = watchSuccessModal(jobId, (id) => {
         const details = extractJobDetails(id);
-        void browser.runtime.sendMessage({
-          type: 'EASY_APPLY_SUCCESS',
-          payload: details,
-        });
+
+        activePrompt = mountSavePrompt(
+          details,
+          // onSave: user confirmed, send to background to persist
+          () => {
+            void browser.runtime.sendMessage({
+              type: 'EASY_APPLY_SUCCESS',
+              payload: details,
+            });
+          },
+          // onDismiss: user skipped, do nothing
+          () => {
+            activePrompt = null;
+          },
+        );
       });
     });
 
-    // Return cleanup so WXT can tear down the script on HMR.
     return () => {
       stopNav();
       stopSuccessWatcher?.();
+      activePrompt?.remove();
     };
   },
 });
