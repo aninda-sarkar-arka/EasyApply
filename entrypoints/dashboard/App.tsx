@@ -4,6 +4,7 @@ import ApplicationsList from '../../src/features/applications/ApplicationsList';
 import ApplicationDetail from '../../src/features/applications/ApplicationDetail';
 import SavedJobs from '../../src/features/applications/SavedJobs';
 import NoteManagement from '../../src/features/applications/NoteManagement';
+import AITools from '../../src/features/ai-tools/AITools';
 import Settings from '../../src/features/settings/Settings';
 
 export default function App() {
@@ -25,6 +26,12 @@ export default function App() {
               className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}
             >
               Applications
+            </NavLink>
+            <NavLink
+              to="/ai-tools"
+              className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}
+            >
+              AI Tools
             </NavLink>
             <NavLink
               to="/saved"
@@ -53,6 +60,7 @@ export default function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/applications" element={<ApplicationsList />} />
           <Route path="/applications/:id" element={<ApplicationDetail />} />
+          <Route path="/ai-tools" element={<AITools />} />
           <Route path="/saved" element={<SavedJobs />} />
           <Route path="/notes" element={<NoteManagement />} />
           <Route path="/settings" element={<Settings />} />

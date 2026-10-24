@@ -10,6 +10,11 @@ export default defineConfig({
     description: 'Local-first job application tracker for LinkedIn',
     version: '0.1.0',
     permissions: ['storage', 'tabs'],
-    host_permissions: ['https://www.linkedin.com/*'],
+    host_permissions: [
+      'https://www.linkedin.com/*',
+      'https://api.openai.com/*',
+      'https://api.anthropic.com/*',
+      'https://generativelanguage.googleapis.com/*',
+    ],
   },
 });
