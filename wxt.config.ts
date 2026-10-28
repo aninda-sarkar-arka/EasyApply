@@ -15,6 +15,7 @@ export default defineConfig({
       'https://api.openai.com/*',
       'https://api.anthropic.com/*',
       'https://generativelanguage.googleapis.com/*',
+      'https://raw.githubusercontent.com/*',
     ],
   },
 });

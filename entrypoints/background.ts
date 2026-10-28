@@ -1,5 +1,6 @@
 import * as applicationsRepo from '../src/db/repositories/applications';
 import type { ExtractedJob } from '../src/scrapers/linkedin/extractor';
+import { refreshRemoteSelectors } from '../src/scrapers/linkedin/remoteSelectors';
 
 interface EasyApplyMessage {
   type: 'EASY_APPLY_SUCCESS';
@@ -7,6 +8,9 @@ interface EasyApplyMessage {
 }
 
 export default defineBackground(() => {
+  // Refresh the remote selector config once on startup (fails silently).
+  void refreshRemoteSelectors();
+
   browser.runtime.onMessage.addListener(
     (message, _sender, sendResponse) => {
       if (!isEasyApplyMessage(message)) return false;
