@@ -48,5 +48,8 @@ Thumbs.db
 *.out
 *.err
 
-# User-requested docs exclusions
-# (Removed README.md and *.pdf from here to allow documentation in repo)
+# Internal / workflow files not relevant to contributors or recruiters
+legacy/
+CLAUDE.md
+docs/sessions/
+docs/PROJECT_STATE.md
