@@ -7,7 +7,7 @@ import { setSelectors, type SelectorConfig } from './selectorStore';
  * Update this constant when the repo URL is known.
  */
 export const REMOTE_SELECTORS_URL =
-  'https://raw.githubusercontent.com/aninda-sarkar-arka/easyapply/main/public/selectors.json';
+  'https://raw.githubusercontent.com/aninda-sarkar-arka/EasyApply/main/public/selectors.json';
 
 const TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
 const CACHE_KEY = 'remoteSelectors';
