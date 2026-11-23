@@ -12,7 +12,10 @@ export default function App() {
     <div className="app-shell">
       <nav className="top-nav">
         <div className="top-nav-inner">
-          <span className="brand">EasyApply</span>
+          <span className="brand" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <img src="logo-sm.png" alt="" style={{ width: 28, height: 28, borderRadius: 7, flexShrink: 0 }} />
+            EasyApply
+          </span>
           <div className="nav-links">
             <NavLink
               to="/"

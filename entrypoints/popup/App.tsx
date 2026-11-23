@@ -13,7 +13,7 @@ interface Stats {
 
 const STATUS_COLOR: Record<ApplicationStatus, string> = {
   saved:     '#94A3B8',
-  applied:   '#0A66C2',
+  applied:   '#7C3AED',
   interview: '#F59E0B',
   offer:     '#10B981',
   rejected:  '#EF4444',
@@ -29,15 +29,11 @@ const STATUS_LABEL: Record<ApplicationStatus, string> = {
 
 function LogoMark() {
   return (
-    <svg width="34" height="34" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect width="128" height="128" rx="26" fill="white" fillOpacity="0.2"/>
-      <path d="M46 56 Q46 36 64 36 Q82 36 82 56"
-            stroke="white" strokeWidth="7" strokeLinecap="round"/>
-      <rect x="16" y="56" width="96" height="56" rx="11" fill="white"/>
-      <path d="M37 83 L54 100 L91 61"
-            stroke="#0A66C2" strokeWidth="8"
-            strokeLinecap="round" strokeLinejoin="round"/>
-    </svg>
+    <img
+      src="logo-sm.png"
+      alt="EasyApply"
+      style={{ width: 38, height: 38, borderRadius: 10, flexShrink: 0 }}
+    />
   );
 }
 
@@ -147,7 +143,7 @@ export default function App() {
 
       {/* ── Header ── */}
       <div style={{
-        background: 'linear-gradient(135deg, #0A66C2 0%, #0597D8 100%)',
+        background: 'linear-gradient(135deg, #2b7fff 0%, #7d54ff 100%)',
         padding: '18px 20px 20px',
         color: 'white',
       }}>
@@ -186,7 +182,7 @@ export default function App() {
         padding: '10px 12px',
         borderBottom: '1px solid #E2E8F0',
       }}>
-        <StatPill value={loading ? 0 : stats?.applied   ?? 0} label="Applied"   color="#0A66C2"/>
+        <StatPill value={loading ? 0 : stats?.applied   ?? 0} label="Applied"   color="#7d54ff"/>
         <div style={{ width: 1, alignSelf: 'stretch', background: '#E2E8F0', margin: '0 2px' }}/>
         <StatPill value={loading ? 0 : stats?.interview ?? 0} label="Interview" color="#F59E0B"/>
         <div style={{ width: 1, alignSelf: 'stretch', background: '#E2E8F0', margin: '0 2px' }}/>
@@ -230,9 +226,9 @@ export default function App() {
           onClick={openDashboard}
           style={{
             flex: 1, padding: '10px 0', borderRadius: 10, border: 'none',
-            background: '#0A66C2', color: 'white',
+            background: '#7d54ff', color: 'white',
             fontWeight: 600, fontSize: '0.8rem', cursor: 'pointer',
-            boxShadow: '0 2px 8px rgba(10,102,194,0.28)',
+            boxShadow: '0 2px 8px rgba(125,84,255,0.30)',
           }}
         >
           Open Dashboard
@@ -242,7 +238,7 @@ export default function App() {
           style={{
             flex: 1, padding: '10px 0', borderRadius: 10,
             border: '1.5px solid #E2E8F0', background: 'white',
-            color: '#0A66C2', fontWeight: 600, fontSize: '0.8rem', cursor: 'pointer',
+            color: '#7d54ff', fontWeight: 600, fontSize: '0.8rem', cursor: 'pointer',
           }}
         >
           Browse Jobs
