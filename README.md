@@ -12,7 +12,7 @@
   <img src="https://img.shields.io/badge/Manifest-V3-blue?logo=googlechrome&logoColor=white" alt="Manifest V3" />
   <img src="https://img.shields.io/badge/TypeScript-strict-3178c6?logo=typescript&logoColor=white" alt="TypeScript" />
   <img src="https://img.shields.io/badge/License-MIT-green" alt="MIT License" />
-  <img src="https://img.shields.io/badge/Tests-119%20passing-brightgreen" alt="Tests" />
+  <img src="https://img.shields.io/badge/Tests-163%20passing-brightgreen" alt="Tests" />
 </p>
 
 ---
@@ -50,6 +50,11 @@ The built-in AI tools (resume review, job match, cover letter, etc.) use **your 
 - Model tier selector: `fast` (cost-efficient) or `smart` (best quality)
 - All JSON responses validated with Zod; one automatic retry on schema mismatch
 
+**Resilience**
+- LinkedIn selectors are config, not code: a JSON file in this repo is fetched once per day and cached locally, so broken selectors can be fixed without shipping a new extension version
+- When DOM selectors fail entirely, the extension falls back to AI extraction from page text (requires an API key)
+- API key encryption utilities built on the Web Crypto API (AES-GCM 256-bit)
+
 **Privacy by design**
 - Zero backend. All data lives in the browser (Dexie / IndexedDB).
 - API keys stored in `chrome.storage.local` only, never synced or logged.
@@ -84,7 +89,7 @@ easyapply/
 ├── src/
 │   ├── ai/
 │   │   ├── adapters/          # openai.ts, anthropic.ts, gemini.ts
-│   │   ├── prompts/           # One file per AI feature
+│   │   ├── prompts/           # One file per AI feature + jobExtraction.ts
 │   │   ├── types.ts           # Shared AI types and error types
 │   │   ├── models.ts          # Tier-to-model-ID map per provider
 │   │   └── index.ts           # generateText, generateJSON, validateKey
@@ -92,8 +97,10 @@ easyapply/
 │   │   ├── schema.ts          # Dexie schema and migrations
 │   │   └── repositories/      # applications, resumes, settings
 │   ├── scrapers/
-│   │   └── linkedin/          # detector, extractor, savePrompt, selectors
-│   └── lib/                   # insights.ts, export.ts (pure helpers)
+│   │   └── linkedin/          # detector, extractor, savePrompt, selectors,
+│   │                          # selectorStore (hot-swap), remoteSelectors (CDN),
+│   │                          # aiExtractor (DOM fallback)
+│   └── lib/                   # insights.ts, export.ts, crypto.ts (AES-GCM)
 ├── tests/
 │   └── fixtures/              # Anonymized HTML snapshots for scraper tests
 └── docs/                      # Architecture, decisions, session logs
@@ -132,7 +139,7 @@ The extension hot-reloads on file save during `npm run dev`.
 npm run build        # Production build
 npm run typecheck    # TypeScript check (no emit)
 npm run lint         # ESLint
-npm test             # Vitest (119 tests)
+npm test             # Vitest (163 tests)
 ```
 
 ---
@@ -153,6 +160,12 @@ The AI tools tab in the dashboard becomes active once a key is saved. The rest o
 Issues and pull requests are welcome. Before opening a large PR, please file an issue to discuss the approach.
 
 The `docs/` folder has the architecture decision records, known issues log, and per-session change logs if you want to understand the design choices.
+
+---
+
+## Privacy
+
+No data is ever sent to a server we operate. See [PRIVACY.md](PRIVACY.md) for the full policy.
 
 ---
 
