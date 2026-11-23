@@ -1,5 +1,24 @@
 import { getSelectors } from './selectorStore';
 
+/** Returns true if the current page has a LinkedIn Easy Apply button. */
+export function isEasyApplyJob(): boolean {
+  const s = getSelectors();
+  return s.easyApplyButton.some((sel) => document.querySelector(sel) !== null);
+}
+
+/**
+ * Returns true if the Easy Apply success modal is currently visible.
+ * First checks selector-based detection, then falls back to text search
+ * inside any visible dialog element.
+ */
+export function isSuccessModalVisible(): boolean {
+  const s = getSelectors();
+  if (s.successModal.some((sel) => document.querySelector(sel) !== null)) return true;
+  const dialogs = Array.from(document.querySelectorAll('[role="dialog"], [aria-modal="true"]'));
+  const pageText = dialogs.map((d) => d.textContent ?? '').join(' ');
+  return s.successModalText.some((phrase) => pageText.includes(phrase));
+}
+
 /** Extract the LinkedIn job ID from a URL string. Returns null if not found. */
 export function extractJobIdFromUrl(url: string): string | null {
   // /jobs/view/1234567890/ or /jobs/view/1234567890?...
@@ -77,3 +96,6 @@ export function watchAnyApplyClick(jobId: string, callback: (jobId: string) => v
   }
   return cleanup;
 }
+
+/** Alias for watchAnyApplyClick for external-Apply-specific callers. */
+export const watchExternalApply = watchAnyApplyClick;
