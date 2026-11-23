@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0A66C2"/>
+      <stop offset="100%" stop-color="#0597D8"/>
+    </linearGradient>
+    <linearGradient id="shine" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background rounded square -->
+  <rect width="128" height="128" rx="26" fill="url(#bg)"/>
+  <!-- Subtle top-shine overlay -->
+  <rect width="128" height="64" rx="26" fill="url(#shine)"/>
+
+  <!-- Briefcase handle -->
+  <path d="M46 56 Q46 36 64 36 Q82 36 82 56"
+        stroke="white" stroke-width="7" stroke-linecap="round" fill="none"/>
+
+  <!-- Briefcase body -->
+  <rect x="16" y="56" width="96" height="56" rx="11" fill="white"/>
+
+  <!-- Horizontal centre line on body -->
+  <rect x="16" y="74" width="96" height="4" fill="#0A66C2" opacity="0.08"/>
+
+  <!-- Checkmark -->
+  <path d="M37 83 L54 100 L91 61"
+        stroke="#0A66C2" stroke-width="8"
+        stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>
