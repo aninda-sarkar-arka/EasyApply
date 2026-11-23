@@ -143,7 +143,7 @@ export default function App() {
 
       {/* ── Header ── */}
       <div style={{
-        background: 'linear-gradient(135deg, #5B21B6 0%, #7C3AED 100%)',
+        background: 'linear-gradient(135deg, #2b7fff 0%, #7d54ff 100%)',
         padding: '18px 20px 20px',
         color: 'white',
       }}>
@@ -182,7 +182,7 @@ export default function App() {
         padding: '10px 12px',
         borderBottom: '1px solid #E2E8F0',
       }}>
-        <StatPill value={loading ? 0 : stats?.applied   ?? 0} label="Applied"   color="#6D28D9"/>
+        <StatPill value={loading ? 0 : stats?.applied   ?? 0} label="Applied"   color="#7d54ff"/>
         <div style={{ width: 1, alignSelf: 'stretch', background: '#E2E8F0', margin: '0 2px' }}/>
         <StatPill value={loading ? 0 : stats?.interview ?? 0} label="Interview" color="#F59E0B"/>
         <div style={{ width: 1, alignSelf: 'stretch', background: '#E2E8F0', margin: '0 2px' }}/>
@@ -226,9 +226,9 @@ export default function App() {
           onClick={openDashboard}
           style={{
             flex: 1, padding: '10px 0', borderRadius: 10, border: 'none',
-            background: '#6D28D9', color: 'white',
+            background: '#7d54ff', color: 'white',
             fontWeight: 600, fontSize: '0.8rem', cursor: 'pointer',
-            boxShadow: '0 2px 8px rgba(109,40,217,0.28)',
+            boxShadow: '0 2px 8px rgba(125,84,255,0.30)',
           }}
         >
           Open Dashboard
@@ -238,7 +238,7 @@ export default function App() {
           style={{
             flex: 1, padding: '10px 0', borderRadius: 10,
             border: '1.5px solid #E2E8F0', background: 'white',
-            color: '#6D28D9', fontWeight: 600, fontSize: '0.8rem', cursor: 'pointer',
+            color: '#7d54ff', fontWeight: 600, fontSize: '0.8rem', cursor: 'pointer',
           }}
         >
           Browse Jobs
