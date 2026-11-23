@@ -143,7 +143,7 @@ export default function App() {
 
       {/* ── Header ── */}
       <div style={{
-        background: 'linear-gradient(135deg, #2b7fff 0%, #7d54ff 100%)',
+        background: 'linear-gradient(135deg, #0e2244 0%, #1c0b42 100%)',
         padding: '18px 20px 20px',
         color: 'white',
       }}>
